@@ -1,0 +1,44 @@
+$screen-sizes: (
+  mobile: (
+    0,
+    767px,
+  ),
+  tablet: (
+    768px,
+    980px,
+  ),
+  desktop: (
+    981px,
+    1919px,
+  ),
+  large-desktop: (
+    1920px,
+    2560px,
+  ),
+);
+
+$breakpoints: ();
+@each $name, $range in $screen-sizes {
+  $only-breakpoint: (
+    "#{$name}-only":
+      "min-width: #{nth($range, 1)}) and (max-width: #{nth($range, -1)}",
+  );
+  $below-breakpoint: (
+    "#{$name}-and-below": "max-width: #{nth($range, -1)}",
+  );
+  $above-breakpoint: (
+    "#{$name}-and-above": "min-width: #{nth($range, 1)}",
+  );
+  $breakpoints: map-merge($breakpoints, $only-breakpoint);
+  $breakpoints: map-merge($breakpoints, $below-breakpoint);
+  $breakpoints: map-merge($breakpoints, $above-breakpoint);
+}
+
+@function breakpoint($key) {
+  $breakpoint: map-get($breakpoints, $key);
+  @if  $breakpoint {
+    @return $breakpoint;
+  } @else {
+    @return default;
+  }
+}

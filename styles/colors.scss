@@ -1,0 +1,29 @@
+@use "sass:color";
+
+$black: #000000;
+
+:root {
+  // Layers
+  --baseLayerColor: #{$black};
+  --secondaryLayerColor: #{$black};
+
+  // Text
+  --primaryTextColor: #{$black};
+  --linkColor: #{$black};
+
+  // Buttons
+  --primaryButtonColor: #{$black};
+  --primaryButtonTextColor: white;
+  --primaryButtonHoverColor: #{$black};
+  --transparentButtonTextColor: #{$black};
+  --transparentButtonHoverColor: #{$black};
+
+  // Inputs
+  --inputBackground: #{$black};
+  --inputBackgroundHover: #{$black};
+
+  // Alerts
+  --alertBackground: #{$black};
+  --errorAlertBackground: #{$black};
+  --errorAlertTextColor: #{$black};
+}

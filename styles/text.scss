@@ -1,0 +1,61 @@
+@mixin heading($size: 1, $weight: normal) {
+  font-size: 1.75rem;
+  line-height: 1.286;
+  font-weight: 500;
+
+  @if $weight == emphasis {
+    font-weight: 600;
+  } @else if $weight == bold {
+    font-weight: 700;
+  } @else if $weight == bolder {
+    font-weight: 800;
+  }
+
+  @if $size == 2 {
+    font-size: 1.5rem;
+    line-height: 1.333;
+  } @else if $size == 3 {
+    font-size: 1.25rem;
+    line-height: 1.4;
+  } @else if $size == 4 {
+    font-size: 1.125rem;
+    line-height: 1.333;
+  } @else if $size == 5 {
+    font-size: 1rem;
+    line-height: 1.5;
+  } @else if $size == 6 {
+    font-size: 0.875rem;
+    line-height: 1.429;
+  } @else if $size == 7 {
+    font-size: 0.75rem;
+    line-height: 1.166;
+  }
+}
+
+@mixin paragraph($size: 1, $weight: normal) {
+  font-size: 1.5rem;
+  line-height: 1.333;
+  font-weight: 400;
+
+  @if $weight == emphasis {
+    font-weight: 600;
+  } @else if $weight == bold {
+    font-weight: 700;
+  } @else if $weight == bolder {
+    font-weight: 800;
+  }
+
+  @if $size == 2 {
+    font-size: 1.25rem;
+    line-height: 1.4;
+  } @else if $size == 3 {
+    font-size: 1rem;
+    line-height: 1.25;
+  } @else if $size == 4 {
+    font-size: 0.875rem;
+    line-height: 1.143;
+  } @else if $size == 5 {
+    font-size: 0.75rem;
+    line-height: 1.333;
+  }
+}
