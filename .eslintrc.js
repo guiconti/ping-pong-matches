@@ -14,6 +14,7 @@ module.exports = {
   rules: {
     "@typescript-eslint/ban-ts-ignore": "off",
     "@typescript-eslint/ban-ts-comment": "off",
+    "import/no-anonymous-default-export": "off",
   },
   settings: {
     react: {

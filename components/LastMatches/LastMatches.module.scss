@@ -1,0 +1,19 @@
+.wrapper {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+
+  > span {
+    width: 0.75rem;
+    height: 0.75rem;
+    background-color: var(--empty);
+    border-radius: 999px;
+    &.win {
+      background-color: var(--win);
+    }
+
+    &.loss {
+      background-color: var(--loss);
+    }
+  }
+}

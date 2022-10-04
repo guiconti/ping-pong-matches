@@ -1,29 +1,48 @@
 @use "sass:color";
 
-$black: #000000;
+$grey100: #818d92;
+$grey200: #323232;
+$grey300: #212121;
+$grey400: #121212;
+
+$green100: #49a078;
+
+$red100: #e05d66;
+$red200: #d33f49;
+
+$blue100: #04498a;
+$blue200: #003566;
 
 :root {
   // Layers
-  --baseLayerColor: #{$black};
-  --secondaryLayerColor: #{$black};
+  --baseLayerColor: #{$grey300};
+  --secondaryLayerColor: #{$grey400};
+  --secondaryLayerColorHover: #{$grey200};
 
   // Text
-  --primaryTextColor: #{$black};
-  --linkColor: #{$black};
+  --primaryTextColor: white;
+  --linkColor: white;
 
   // Buttons
-  --primaryButtonColor: #{$black};
+  --primaryButtonColor: #{$blue200};
   --primaryButtonTextColor: white;
-  --primaryButtonHoverColor: #{$black};
-  --transparentButtonTextColor: #{$black};
-  --transparentButtonHoverColor: #{$black};
+  --primaryButtonHoverColor: #{$blue100};
+  --destructiveButtonColor: #{$red200};
+  --destructiveButtonHoverColor: #{$red100};
+  --transparentButtonTextColor: white;
+  --transparentButtonHoverColor: white;
 
   // Inputs
-  --inputBackground: #{$black};
-  --inputBackgroundHover: #{$black};
+  --inputBackground: white;
+  --inputBackgroundHover: white;
 
   // Alerts
-  --alertBackground: #{$black};
-  --errorAlertBackground: #{$black};
-  --errorAlertTextColor: #{$black};
+  --alertBackground: white;
+  --errorAlertBackground: white;
+  --errorAlertTextColor: white;
+
+  // Status
+  --win: #{$green100};
+  --loss: #{$red200};
+  --empty: #{$grey100};
 }

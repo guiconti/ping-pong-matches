@@ -1,0 +1,14 @@
+version: '3'
+
+# Define services
+services:
+  # Postgres Service
+  postgres:
+    image: 'postgres:alpine'
+    restart: always
+    environment:
+      POSTGRES_USER: pingpong
+      POSTGRES_PASSWORD: pingpong
+      POSTGRES_DB: pingpong
+    ports:
+      - "5432:5432"

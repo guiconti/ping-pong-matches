@@ -1,0 +1,21 @@
+@import "~/styles/variables";
+@import "~/styles/text";
+
+.header {
+  @include heading(2, bold);
+  margin: 0 auto;
+  max-width: $maxComponentWidth;
+  text-align: center;
+}
+
+.left {
+  text-align: left;
+}
+
+.center {
+  text-align: center;
+}
+
+.start {
+  text-align: start;
+}

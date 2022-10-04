@@ -1,0 +1,32 @@
+@import "~/styles/text";
+
+.button {
+  @include paragraph(3);
+  appearance: button;
+  backface-visibility: hidden;
+  background-color: var(--primaryButtonColor);
+  border-radius: 6px;
+  border: none;
+  box-shadow: rgba(50, 50, 93, 0.1) 0 0 0 1px inset,
+    rgba(50, 50, 93, 0.1) 0 2px 5px 0, rgba(0, 0, 0, 0.07) 0 1px 1px 0;
+  color: var(--primaryButtonTextColor);
+  cursor: pointer;
+  padding: 0.75rem 1rem;
+  outline: none;
+  text-align: center;
+  transition: all 0.2s, box-shadow 0.08s ease-in;
+  &:disabled {
+    cursor: default;
+  }
+
+  &:hover {
+    background-color: var(--primaryButtonHoverColor);
+  }
+}
+
+.destructive {
+  background-color: var(--destructiveButtonColor);
+  &:hover {
+    background-color: var(--destructiveButtonHoverColor);
+  }
+}
