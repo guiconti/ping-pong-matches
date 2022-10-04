@@ -10,12 +10,22 @@ interface TeamProps {
   onClick?(): void;
   winner?: boolean;
   selected?: boolean;
+  disabled?: boolean;
 }
 
-export default function Team({ team, onClick, winner, selected }: TeamProps) {
+export default function Team({
+  team,
+  onClick,
+  winner,
+  selected,
+  disabled,
+}: TeamProps) {
   return (
     <Card
-      className={cx(styles.wrapper, { [styles.selected]: selected })}
+      className={cx(styles.wrapper, {
+        [styles.selected]: selected,
+        [styles.disabled]: disabled,
+      })}
       onClick={onClick}
     >
       <div className={styles.names}>

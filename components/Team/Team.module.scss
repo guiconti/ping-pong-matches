@@ -37,3 +37,9 @@
 .selected {
   background-color: var(--secondaryLayerColorHover);
 }
+
+.disabled {
+  color: var(--empty);
+  cursor: initial;
+  pointer-events: none;
+}

@@ -2,12 +2,28 @@
   display: flex;
   align-items: center;
   justify-content: center;
-	gap: 1rem;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.team {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  > h3 {
+    text-align: center;
+  }
 }
 
 .teamsList {
+  margin-top: 1rem;
   display: flex;
   align-items: center;
+  justify-content: center;
   flex-wrap: wrap;
-	gap: 0.5rem;
+  gap: 0.5rem;
+}
+
+.cancelButton {
+  margin-top: 1rem;
 }
