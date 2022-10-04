@@ -155,17 +155,13 @@ const Home: NextPage<HomeProps> = ({ players, teams, matches }: HomeProps) => {
   const onMatchFinish = useCallback(
     (winnerTeam: Team) => {
       if (!currentMatch) return;
-      const newMatchHistory = [
-        { ...currentMatch, createdAt: new Date(), teamWonId: winnerTeam.id },
-        ...matchesHistory,
-      ];
-      setMatchHistory(newMatchHistory);
       const newTeamsDictionary = { ...teamsDictionary };
       const matchData = {
         teamAId: currentMatch.teamA.id,
         teamBId: currentMatch.teamB.id,
         teamWonId: winnerTeam.id,
       };
+      let teamA, teamB;
       if (
         winnerTeam.playerA.id !== currentMatch.teamA.playerA.id &&
         winnerTeam.playerA.id !== currentMatch.teamA.playerB.id
@@ -182,6 +178,7 @@ const Home: NextPage<HomeProps> = ({ players, teams, matches }: HomeProps) => {
         newTeamsDictionary[
           `${currentMatch.teamA.playerB.id}-${currentMatch.teamA.playerA.id}`
         ] = newTeam;
+        teamA = newTeam;
       } else {
         const newTeam =
           newTeamsDictionary[
@@ -195,6 +192,7 @@ const Home: NextPage<HomeProps> = ({ players, teams, matches }: HomeProps) => {
         newTeamsDictionary[
           `${currentMatch.teamB.playerB.id}-${currentMatch.teamB.playerA.id}`
         ] = newTeam;
+        teamB = newTeam;
       }
       const newWinnerTeam =
         newTeamsDictionary[`${winnerTeam.playerA.id}-${winnerTeam.playerB.id}`];
@@ -204,7 +202,23 @@ const Home: NextPage<HomeProps> = ({ players, teams, matches }: HomeProps) => {
         newWinnerTeam;
       newTeamsDictionary[`${winnerTeam.playerB.id}-${winnerTeam.playerA.id}`] =
         newWinnerTeam;
+      if (teamA) {
+        teamB = newWinnerTeam;
+      } else {
+        teamA = newWinnerTeam;
+      }
       setTeamsDictionary(newTeamsDictionary);
+      const newMatchHistory = [
+        {
+          ...currentMatch,
+          teamA,
+          teamB,
+          createdAt: new Date(),
+          teamWonId: winnerTeam.id,
+        },
+        ...matchesHistory,
+      ];
+      setMatchHistory(newMatchHistory);
       onPickNextMatch(winnerTeam);
       fetch("http://127.0.0.1:8080/v1/matches", {
         method: "POST",
@@ -280,6 +294,8 @@ const Home: NextPage<HomeProps> = ({ players, teams, matches }: HomeProps) => {
       ...teamB,
     };
 
+    newCurrentMatch.teamA = teamA;
+    newCurrentMatch.teamB = teamB;
     newCurrentMatch.teamWonId = undefined;
     setCurrentMatch(newCurrentMatch);
     setMatchHistory(newMatchesHistory);
@@ -331,7 +347,7 @@ const Home: NextPage<HomeProps> = ({ players, teams, matches }: HomeProps) => {
                   <h2>Partidas anteriores</h2>
                   {matchesHistory.map((match: MatchType) => (
                     <Match
-                      key={match.id}
+                      key={match.id || `${match.teamA.id}-${match.teamB.id}`}
                       teamA={match.teamA}
                       teamB={match.teamB}
                       winnerId={match.teamWonId}
