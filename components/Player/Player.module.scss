@@ -1,0 +1,31 @@
+@import "@/styles/text";
+
+.wrapper {
+  position: relative;
+  height: 4rem;
+  width: 9rem;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  > h4 {
+    @include heading(4);
+  }
+}
+
+.expanded {
+  height: auto;
+}
+
+.check {
+  position: absolute;
+  right: 0.5rem;
+  top: 0.5rem;
+  color: var(--win);
+}
+
+.statuses {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  margin-top: 0.5rem;
+}

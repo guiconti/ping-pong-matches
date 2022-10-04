@@ -2,13 +2,18 @@
   display: flex;
   flex-direction: column;
   align-items: center;
+  margin-top: 1rem;
+  padding: 0 4rem;
 }
 
 .players {
   display: flex;
-  flex-direction: column;
-  max-width: 10rem;
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: stretch;
+  justify-content: center;
   margin-top: 1rem;
+  gap: 0.5rem;
 }
 
 .startButton {

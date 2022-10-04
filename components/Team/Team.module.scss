@@ -27,11 +27,19 @@
   gap: 0.25rem;
 }
 
-.star {
+.star,
+.check {
   position: absolute;
   right: 0.5rem;
   top: 0.5rem;
+}
+
+.star {
   color: var(--star);
+}
+
+.check {
+  color: var(--win);
 }
 
 .selected {

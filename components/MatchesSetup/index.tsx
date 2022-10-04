@@ -1,12 +1,12 @@
 import { useState, useEffect, useCallback } from "react";
-import type { Player } from "@/types";
+import type { Player as PlayerType } from "@/types";
+import Player from "@/components/Player";
 import Header from "@/components/bendev/Header";
-import Toggle from "@/components/bendev/Toggle";
 import Button from "@/components/bendev/Button";
 import styles from "./MatchesSetup.module.scss";
 
 interface PlayerToggleProps {
-  player: Player;
+  player: PlayerType;
   active: boolean;
   onTogglePlayer(playerId: string): void;
 }
@@ -16,17 +16,12 @@ function PlayerToggle({ player, active, onTogglePlayer }: PlayerToggleProps) {
     onTogglePlayer(player.id);
   }, [player.id, onTogglePlayer]);
 
-  return (
-    <span>
-      <Toggle checked={active} id={player.id} onChange={onToggle} />
-      <label htmlFor={player.id}>{player.name}</label>
-    </span>
-  );
+  return <Player player={player} selected={active} onClick={onToggle} />;
 }
 
-function generateState(players: Array<Player>) {
+function generateState(players: Array<PlayerType>) {
   const newDictionary: {
-    [key: string]: { player: Player; active: boolean };
+    [key: string]: { player: PlayerType; active: boolean };
   } = {};
   players.forEach(
     (player) => (newDictionary[player.id] = { player, active: true })
@@ -35,8 +30,8 @@ function generateState(players: Array<Player>) {
 }
 
 interface MatchesSetupProps {
-  players: Array<Player>;
-  onStartMatches(selectedPlayerrs: Array<Player>): void;
+  players: Array<PlayerType>;
+  onStartMatches(selectedPlayerrs: Array<PlayerType>): void;
 }
 
 export default function ActivePlayers({
@@ -44,7 +39,7 @@ export default function ActivePlayers({
   onStartMatches,
 }: MatchesSetupProps) {
   const [possiblePlayers, setPossiblePlayers] = useState<{
-    [key: string]: { player: Player; active: boolean };
+    [key: string]: { player: PlayerType; active: boolean };
   }>(generateState(players));
 
   useEffect(() => {
@@ -61,7 +56,7 @@ export default function ActivePlayers({
   );
 
   const onStart = useCallback(() => {
-    const activePlayers: Array<Player> = [];
+    const activePlayers: Array<PlayerType> = [];
     const ids: string[] = Object.keys(possiblePlayers);
     ids.forEach((playerId) => {
       if (!possiblePlayers[playerId].active) return;
@@ -84,7 +79,7 @@ export default function ActivePlayers({
         ))}
       </div>
       <Button className={styles.startButton} onClick={onStart}>
-        Start matches
+        Começar
       </Button>
     </section>
   );

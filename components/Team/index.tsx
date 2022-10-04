@@ -2,7 +2,7 @@ import cx from "classnames";
 import { Team as TeamType } from "@/types";
 import Card from "@/components/bendev/Card";
 import LastMatches from "@/components/LastMatches";
-import { FaStar } from "react-icons/fa";
+import { FaCheckCircle, FaStar } from "react-icons/fa";
 import styles from "./Team.module.scss";
 
 interface TeamProps {
@@ -40,11 +40,8 @@ export default function Team({
         </p>
         <LastMatches teamId={team.id} matches={team.matches} amount={5} />
       </div>
-      {winner && (
-        <span className={styles.star}>
-          <FaStar />
-        </span>
-      )}
+      {winner && <FaStar className={styles.star} />}
+      {selected && <FaCheckCircle className={styles.check} />}
     </Card>
   );
 }

@@ -52,9 +52,10 @@ const Home: NextPage<HomeProps> = ({ players, teams, matches }: HomeProps) => {
     setTeamsDictionary(newTeamsDictionary);
   }, [teams]);
 
-  const onForceNextMatch = useCallback((nextMatch: MatchType) => {
-    setCurrentMatch(nextMatch);
-  }, []);
+  useEffect(() => {
+    if (activePlayers.length < 4) return;
+    onPickNextMatch();
+  }, [activePlayers]);
 
   const onPickNextMatch = useCallback(
     (winnerTeam?: Team) => {
@@ -232,7 +233,6 @@ const Home: NextPage<HomeProps> = ({ players, teams, matches }: HomeProps) => {
   const onStartMatches = useCallback(
     (selectedPlayers: Array<Player>) => {
       setActivePlayers(selectedPlayers);
-      onPickNextMatch();
     },
     [onPickNextMatch]
   );
