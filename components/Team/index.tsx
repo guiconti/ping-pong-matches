@@ -1,3 +1,4 @@
+import cx from "classnames";
 import { Team as TeamType } from "@/types";
 import Card from "@/components/bendev/Card";
 import LastMatches from "@/components/LastMatches";
@@ -8,11 +9,15 @@ interface TeamProps {
   team: TeamType;
   onClick?(): void;
   winner?: boolean;
+  selected?: boolean;
 }
 
-export default function Team({ team, onClick, winner }: TeamProps) {
+export default function Team({ team, onClick, winner, selected }: TeamProps) {
   return (
-    <Card className={styles.wrapper} onClick={onClick}>
+    <Card
+      className={cx(styles.wrapper, { [styles.selected]: selected })}
+      onClick={onClick}
+    >
       <div className={styles.names}>
         <span>{team.playerA.name}</span> e <span>{team.playerB.name}</span>
       </div>

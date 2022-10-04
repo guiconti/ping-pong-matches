@@ -3,6 +3,7 @@ import type { NextPage } from "next";
 import MatchesSetup from "@/components/MatchesSetup";
 import Match from "@/components/Match";
 import Button from "@/components/bendev/Button";
+import ForceMatch from "@/components/ForceMatch";
 import type { Player, Team, Match as MatchType } from "@/types";
 import styles from "./Home.module.scss";
 
@@ -40,6 +41,7 @@ const Home: NextPage<HomeProps> = ({ players, teams, matches }: HomeProps) => {
   }>({});
   const [currentMatch, setCurrentMatch] = useState<MatchType>();
   const [matchesHistory, setMatchHistory] = useState<MatchType>(matches);
+  const [forcingMatch, setForcingMatch] = useState<boolean>(false);
 
   useEffect(() => {
     const newTeamsDictionary: { [key: string]: Team } = {};
@@ -284,34 +286,60 @@ const Home: NextPage<HomeProps> = ({ players, teams, matches }: HomeProps) => {
     setTeamsDictionary(newTeamsDictionary);
   }, [matchesHistory, teamsDictionary]);
 
+  const onStartForceMatch = useCallback(() => {
+    setForcingMatch(true);
+  }, []);
+
+  const onForceMatchChosen = useCallback((match: MatchType) => {
+    setCurrentMatch(match);
+    setForcingMatch(false);
+  }, []);
+
+  const onForceMatchCancel = useCallback(() => {
+    setForcingMatch(false);
+  }, []);
+
   return (
     <>
       {!currentMatch ? (
         <MatchesSetup players={players} onStartMatches={onStartMatches} />
       ) : (
         <section className={styles.wrapper}>
-          <Match
-            teamA={currentMatch.teamA}
-            teamB={currentMatch.teamB}
-            onMatchFinish={onMatchFinish}
-          />
-          {matchesHistory.length > 0 && (
+          {forcingMatch ? (
+            <ForceMatch
+              teams={teams}
+              onMatchChosen={onForceMatchChosen}
+              onCancel={onForceMatchCancel}
+            />
+          ) : (
             <>
-              <Button onClick={onDeleteLastMatch} destructive>
-                Refazer partida anterior
-              </Button>
-              <div className={styles.previousMatches}>
-                <h2>Partidas anteriores</h2>
-                {matchesHistory.map((match: MatchType) => (
-                  <Match
-                    key={match.id}
-                    teamA={match.teamA}
-                    teamB={match.teamB}
-                    winnerId={match.teamWonId}
-                    createdAt={match.createdAt}
-                  />
-                ))}
+              <Match
+                teamA={currentMatch.teamA}
+                teamB={currentMatch.teamB}
+                onMatchFinish={onMatchFinish}
+              />
+              <div className={styles.actions}>
+                <Button onClick={onStartForceMatch}>Forçar partida</Button>
+                {matchesHistory.length > 0 && (
+                  <Button onClick={onDeleteLastMatch} destructive>
+                    Refazer partida anterior
+                  </Button>
+                )}
               </div>
+              {matchesHistory.length > 0 && (
+                <div className={styles.previousMatches}>
+                  <h2>Partidas anteriores</h2>
+                  {matchesHistory.map((match: MatchType) => (
+                    <Match
+                      key={match.id}
+                      teamA={match.teamA}
+                      teamB={match.teamB}
+                      winnerId={match.teamWonId}
+                      createdAt={match.createdAt}
+                    />
+                  ))}
+                </div>
+              )}
             </>
           )}
         </section>
