@@ -4,13 +4,13 @@ import { Match } from "@/types";
 import styles from "./LastMatches.module.scss";
 
 interface LastMatchesProps {
-  teamId: string;
+  teamIds: string | string[];
   matches: Array<Match>;
   amount?: number;
 }
 
 export default function LastMatches({
-  teamId,
+  teamIds,
   matches: sentMatches,
   amount = 5,
 }: LastMatchesProps) {
@@ -31,8 +31,8 @@ export default function LastMatches({
         <span
           key={index}
           className={cx({
-            [styles.win]: match && match.teamWonId === teamId,
-            [styles.loss]: match && match.teamWonId !== teamId,
+            [styles.win]: match && teamIds.includes(match.teamWonId),
+            [styles.loss]: match && !teamIds.includes(match.teamWonId),
           })}
         />
       ))}

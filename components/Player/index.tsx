@@ -1,6 +1,8 @@
+import { useMemo } from "react";
 import cx from "classnames";
 import { FaCheckCircle } from "react-icons/fa";
 import Card from "@/components/bendev/Card";
+import LastMatches from "@/components/LastMatches";
 import PlayerType from "@/types/player";
 import styles from "./Player.module.scss";
 
@@ -33,7 +35,13 @@ export default function Player({
           <p>
             Derrotas: <strong>{player.losses}</strong>
           </p>
-          {/* <LastMatches teamId={team.id} matches={team.matches} amount={5} /> */}
+          {player.matches && player.matches.length > 0 && (
+            <LastMatches
+              teamIds={player.teams}
+              matches={player.matches}
+              amount={5}
+            />
+          )}
         </div>
       )}
       {selected && <FaCheckCircle className={styles.check} />}

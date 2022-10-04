@@ -38,7 +38,7 @@ export default function Team({
         <p>
           Derrotas: <strong>{team.losses}</strong>
         </p>
-        <LastMatches teamId={team.id} matches={team.matches} amount={5} />
+        <LastMatches teamIds={[team.id]} matches={team.matches} amount={5} />
       </div>
       {winner && <FaStar className={styles.star} />}
       {selected && <FaCheckCircle className={styles.check} />}
