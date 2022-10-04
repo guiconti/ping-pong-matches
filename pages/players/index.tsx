@@ -1,12 +1,13 @@
 import { useMemo } from "react";
 import Link from "next/link";
-import Team from "@/components/Team";
 import type { Player as PlayerType } from "@/types";
 import Player from "@/components/Player";
 import styles from "./Players.module.scss";
 
 export async function getServerSideProps() {
-  const playersResult = await fetch("http://127.0.0.1:8080/v1/players?expanded=true");
+  const playersResult = await fetch(
+    "http://127.0.0.1:8080/v1/players?expanded=true"
+  );
   const playersData = await playersResult.json();
   const players = playersData.data;
   return {

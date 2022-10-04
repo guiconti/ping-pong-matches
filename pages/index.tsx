@@ -1,5 +1,7 @@
 import { useState, useEffect, useCallback } from "react";
 import type { NextPage } from "next";
+import Link from "next/link";
+import cx from "classnames";
 import MatchesSetup from "@/components/MatchesSetup";
 import Match from "@/components/Match";
 import Button from "@/components/bendev/Button";
@@ -318,7 +320,18 @@ const Home: NextPage<HomeProps> = ({ players, teams, matches }: HomeProps) => {
   return (
     <>
       {!currentMatch ? (
-        <MatchesSetup players={players} onStartMatches={onStartMatches} />
+        <>
+          <MatchesSetup players={players} onStartMatches={onStartMatches} />
+          <div className={cx(styles.actions, styles.links)}>
+            {/* These should be a Link button instead of a button wrapping a link */}
+            <Link href="/teams">
+              <Button>Ver times</Button>
+            </Link>
+            <Link href="/players">
+              <Button>Ver players</Button>
+            </Link>
+          </div>
+        </>
       ) : (
         <section className={styles.wrapper}>
           {forcingMatch ? (
