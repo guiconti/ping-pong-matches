@@ -3,4 +3,5 @@ export default interface Match {
   teamAId: string;
   teamsBId: string;
   teamWonId: string;
+  createdAt: string;
 }

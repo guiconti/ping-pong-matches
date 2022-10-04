@@ -1,4 +1,5 @@
 @import "@/styles/media";
+@import "~/styles/text";
 
 .wrapper {
   display: flex;
@@ -6,23 +7,36 @@
   justify-content: center;
   gap: 1rem;
   padding: 1rem;
+  user-select: none;
 
   @media (breakpoint(mobile-only)) {
     flex-direction: column;
     align-items: stretch;
   }
 
-  > span {
+  > div {
     display: flex;
+    flex-direction: column;
     align-items: center;
-    justify-content: center;
-    width: 3rem;
-    height: 3rem;
-    border-radius: 999px;
-    background-color: var(--baseLayerColor);
-
-    @media (breakpoint(mobile-only)) {
-      margin: 0 auto;
-    }
   }
+}
+
+.versus {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 3rem;
+  height: 3rem;
+  border-radius: 999px;
+  background-color: var(--baseLayerColor);
+
+  @media (breakpoint(mobile-only)) {
+    margin: 0 auto;
+  }
+}
+
+.date {
+  @include paragraph(5);
+  margin-bottom: 0.5rem;
+  color: var(--empty);
 }

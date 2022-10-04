@@ -26,7 +26,7 @@ export default function LastMatches({
 
   return (
     <p className={styles.wrapper}>
-      Last {amount}:
+      Últimas {amount}:
       {matches.map((match, index) => (
         <span
           key={index}

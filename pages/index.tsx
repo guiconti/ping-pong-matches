@@ -13,7 +13,9 @@ export async function getServerSideProps() {
   const teamsResult = await fetch("http://127.0.0.1:8080/v1/teams");
   const teamsData = await teamsResult.json();
   const teams = teamsData.data;
-  const matchesResult = await fetch("http://127.0.0.1:8080/v1/matches?limit=5");
+  const matchesResult = await fetch(
+    "http://127.0.0.1:8080/v1/matches?limit=5&includeFullMatches=true"
+  );
   const matchesData = await matchesResult.json();
   const matches = matchesData.data.slice(0, 5);
   return {
@@ -151,7 +153,10 @@ const Home: NextPage<HomeProps> = ({ players, teams, matches }: HomeProps) => {
   const onMatchFinish = useCallback(
     (winnerTeam: Team) => {
       if (!currentMatch) return;
-      const newMatchHistory = [currentMatch, ...matchesHistory];
+      const newMatchHistory = [
+        { ...currentMatch, createdAt: new Date(), teamWonId: winnerTeam.id },
+        ...matchesHistory,
+      ];
       setMatchHistory(newMatchHistory);
       const newTeamsDictionary = { ...teamsDictionary };
       const matchData = {
@@ -225,9 +230,59 @@ const Home: NextPage<HomeProps> = ({ players, teams, matches }: HomeProps) => {
     const deleted = deleteLastData.data;
     if (deleted <= 0 || matchesHistory.length === 0) return;
     const newMatchesHistory = [...matchesHistory];
-    const newCurrentMatch = newMatchesHistory.splice(0, 1);
+    const newCurrentMatch = newMatchesHistory.splice(0, 1)[0];
+
+    const teamA =
+      teamsDictionary[
+        `${newCurrentMatch.teamA.playerA.id}-${newCurrentMatch.teamA.playerB.id}`
+      ];
+    const teamB =
+      teamsDictionary[
+        `${newCurrentMatch.teamB.playerA.id}-${newCurrentMatch.teamB.playerB.id}`
+      ];
+    const teamAWinner = newCurrentMatch.teamWonId === teamA.id;
+
+    if (teamAWinner) {
+      teamA.wins--;
+      teamB.losses--;
+    } else {
+      teamA.losses--;
+      teamB.wins--;
+    }
+
+    const teamAMatches = [...teamA.matches];
+    teamAMatches.splice(0, 1);
+    teamA.matches = teamAMatches;
+    const teamBMatches = [...teamB.matches];
+    teamBMatches.splice(0, 1);
+    teamB.matches = teamBMatches;
+    const newTeamsDictionary = { ...teamsDictionary };
+    newTeamsDictionary[
+      `${newCurrentMatch.teamA.playerA.id}-${newCurrentMatch.teamA.playerB.id}`
+    ] = {
+      ...teamA,
+    };
+    newTeamsDictionary[
+      `${newCurrentMatch.teamA.playerB.id}-${newCurrentMatch.teamA.playerA.id}`
+    ] = {
+      ...teamA,
+    };
+    newTeamsDictionary[
+      `${newCurrentMatch.teamB.playerA.id}-${newCurrentMatch.teamB.playerB.id}`
+    ] = {
+      ...teamB,
+    };
+    newTeamsDictionary[
+      `${newCurrentMatch.teamB.playerB.id}-${newCurrentMatch.teamB.playerA.id}`
+    ] = {
+      ...teamB,
+    };
+
+    newCurrentMatch.teamWonId = undefined;
     setCurrentMatch(newCurrentMatch);
-  }, [matchesHistory]);
+    setMatchHistory(newMatchesHistory);
+    setTeamsDictionary(newTeamsDictionary);
+  }, [matchesHistory, teamsDictionary]);
 
   return (
     <>
@@ -241,9 +296,23 @@ const Home: NextPage<HomeProps> = ({ players, teams, matches }: HomeProps) => {
             onMatchFinish={onMatchFinish}
           />
           {matchesHistory.length > 0 && (
-            <Button onClick={onDeleteLastMatch} destructive>
-              Undo last match
-            </Button>
+            <>
+              <Button onClick={onDeleteLastMatch} destructive>
+                Refazer partida anterior
+              </Button>
+              <div className={styles.previousMatches}>
+                <h2>Partidas anteriores</h2>
+                {matchesHistory.map((match: MatchType) => (
+                  <Match
+                    key={match.id}
+                    teamA={match.teamA}
+                    teamB={match.teamB}
+                    winnerId={match.teamWonId}
+                    createdAt={match.createdAt}
+                  />
+                ))}
+              </div>
+            </>
           )}
         </section>
       )}
