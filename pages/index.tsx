@@ -146,9 +146,31 @@ const Home: NextPage<HomeProps> = ({ players, teams, matches }: HomeProps) => {
         randomIntFromInterval(0, possiblePlayers.length - 1),
         1
       )[0].id;
+      let teamA = teamsDictionary[`${playerAIdTeamA}-${playerBIdTeamA}`];
+      let teamB = teamsDictionary[`${playerAIdTeamB}-${playerBIdTeamB}`];
+      // TODO: It would be good to support checking for alternate teams even if it is the first match
+      if (currentMatch) {
+        const teamAMatches = teamA.wins + teamA.losses;
+        const teamBMatches = teamB.wins + teamB.losses;
+        const alternateTeamA =
+          teamsDictionary[`${playerAIdTeamA}-${playerBIdTeamB}`];
+        const alternateTeamB =
+          teamsDictionary[`${playerAIdTeamB}-${playerBIdTeamA}`];
+        const alternateTeamAMatches =
+          alternateTeamA.wins + alternateTeamA.losses;
+        const alternateTeamBMatches =
+          alternateTeamB.wins + alternateTeamB.losses;
+        if (
+          alternateTeamAMatches + alternateTeamBMatches <
+          teamAMatches + teamBMatches
+        ) {
+          teamA = alternateTeamA;
+          teamB = alternateTeamB;
+        }
+      }
       const newMatch = {
-        teamA: teamsDictionary[`${playerAIdTeamA}-${playerBIdTeamA}`],
-        teamB: teamsDictionary[`${playerAIdTeamB}-${playerBIdTeamB}`],
+        teamA,
+        teamB,
       };
       setCurrentMatch(newMatch);
     },
