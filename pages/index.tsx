@@ -102,9 +102,9 @@ const Home: NextPage<HomeProps> = ({ players, teams, matches }: HomeProps) => {
                 : currentMatch.teamA;
             if (matchesHistory.length === 0) {
               if (Math.random() >= 0.5) {
-                playersThatWontBePicked.push(looserTeam.playerA);
+                playersThatWontBePicked.push(looserTeam.playerA.id);
               } else {
-                playersThatWontBePicked.push(looserTeam.playerB);
+                playersThatWontBePicked.push(looserTeam.playerB.id);
               }
             } else {
               const lastMatch = matchesHistory[0];
@@ -115,7 +115,36 @@ const Home: NextPage<HomeProps> = ({ players, teams, matches }: HomeProps) => {
                 lastMatch.teamB.playerB.id,
               ];
               if (lastMatchPlayers.includes(looserTeam.playerA.id)) {
-                playersThatWontBePicked.push(looserTeam.playerA.id);
+                // If they were both in the last match
+                if (lastMatchPlayers.includes(looserTeam.playerB.id)) {
+                  const lastMatchTeamLooser =
+                    lastMatch.teamWonId === lastMatch.teamA.id
+                      ? lastMatch.teamB
+                      : lastMatch.teamA;
+                  const playerAAlsoLostLastOne =
+                    looserTeam.playerA.id === lastMatchTeamLooser.playerA.id ||
+                    looserTeam.playerA.id === lastMatchTeamLooser.playerB.id;
+                  const playerBAlsoLostLastOne =
+                    looserTeam.playerB.id === lastMatchTeamLooser.playerA.id ||
+                    looserTeam.playerB.id === lastMatchTeamLooser.playerB.id;
+                  if (playerAAlsoLostLastOne && !playerBAlsoLostLastOne) {
+                    playersThatWontBePicked.push(looserTeam.playerA.id);
+                  } else if (
+                    !playerAAlsoLostLastOne &&
+                    playerBAlsoLostLastOne
+                  ) {
+                    playersThatWontBePicked.push(looserTeam.playerB.id);
+                    // If they both lost the last match then we pick one randomly
+                  } else {
+                    if (Math.random() >= 0.5) {
+                      playersThatWontBePicked.push(looserTeam.playerA.id);
+                    } else {
+                      playersThatWontBePicked.push(looserTeam.playerB.id);
+                    }
+                  }
+                } else {
+                  playersThatWontBePicked.push(looserTeam.playerA.id);
+                }
               } else {
                 playersThatWontBePicked.push(looserTeam.playerB.id);
               }
@@ -126,6 +155,7 @@ const Home: NextPage<HomeProps> = ({ players, teams, matches }: HomeProps) => {
       const possiblePlayers = activePlayers.filter(
         (player) => !playersThatWontBePicked.includes(player.id)
       );
+      console.log(possiblePlayers);
       if (!playerAIdTeamA) {
         playerAIdTeamA = possiblePlayers.splice(
           randomIntFromInterval(0, possiblePlayers.length - 1),
